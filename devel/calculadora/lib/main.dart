@@ -13,9 +13,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String numero = '0';
+  double primeiroNumero = 0.0;
+  String operacao = '';
 
   void calcular(String tecla) {
     switch (tecla) {
+      case '0':
       case '1':
       case '2':
       case '3':
@@ -39,6 +42,67 @@ class _MyAppState extends State<MyApp> {
           }
           numero = numero.replaceAll('.', ',');
         });
+        break;
+
+      case '+':
+      case '-':
+      case 'X':
+      case '/':
+        operacao = tecla;
+        numero = numero.replaceAll(',', '.');
+        primeiroNumero = double.parse(numero);
+        numero = numero.replaceAll('.', ',');
+        numero = '0';
+        break;
+
+      case '=':
+        double resultado = 0.0;
+
+        if (operacao == '/') {
+          if (double.parse(numero) * 1 == 0) {
+            print('ERRO!');
+            return;
+          }
+        }
+
+        if (operacao == '+') {
+          resultado = primeiroNumero + double.parse(numero);
+        }
+
+        if (operacao == '-') {
+          resultado = primeiroNumero - double.parse(numero);
+        }
+
+        if (operacao == 'X') {
+          resultado = primeiroNumero * double.parse(numero);
+        }
+
+        if (operacao == '/') {
+          resultado = primeiroNumero / double.parse(numero);
+        }
+
+        String resultadoString = resultado.toString();
+
+        List<String> resultadoPartes = resultadoString.split('.');
+
+        if (int.parse(resultadoPartes[1]) * 1 == 0) {
+          setState(() {
+            numero = int.parse(resultadoPartes[0]).toString();
+          });
+        } else {
+          setState(() {
+            numero = resultado.toString();
+          });
+        }
+        break;
+
+      case '<x':
+      setState(() {
+        if (numero.length > 0){
+          numero = numero.substring(0, numero.length - 1);   
+        }     
+      });
+
         break;
 
       case 'AC':
