@@ -40,8 +40,9 @@ class _MyAppState extends State<MyApp> {
             int numeroInt = int.parse(numero);
             numero = numeroInt.toString();
           }
-          numero = numero.replaceAll('.', ',');
         });
+
+        numero = numero.replaceAll('.', ',');
         break;
 
       case '+':
@@ -58,9 +59,13 @@ class _MyAppState extends State<MyApp> {
       case '=':
         double resultado = 0.0;
 
+        numero = numero.replaceAll(',', '.');
+
         if (operacao == '/') {
           if (double.parse(numero) * 1 == 0) {
-            print('ERRO!');
+            setState(() {
+              numero = '0';
+            });
             return;
           }
         }
@@ -94,15 +99,16 @@ class _MyAppState extends State<MyApp> {
             numero = resultado.toString();
           });
         }
+
+        numero = numero.replaceAll('.', ',');
         break;
 
       case '<x':
-      setState(() {
-        if (numero.length > 0){
-          numero = numero.substring(0, numero.length - 1);   
-        }     
-      });
-
+        setState(() {
+          if (numero.length > 0) {
+            numero = numero.substring(0, numero.length - 1);
+          }
+        });
         break;
 
       case 'AC':
@@ -154,10 +160,7 @@ class _MyAppState extends State<MyApp> {
                 Text(''),
                 GestureDetector(
                   onTap: () => calcular('<x'),
-                  child: Text(
-                    '<x',
-                    style: TextStyle(fontSize: 48),
-                  ),
+                  child: Image.asset('assets/images/arrow-back.png', width: 56, height: 56,),
                 ),
               ],
             ),
